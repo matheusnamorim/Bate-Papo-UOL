@@ -35,14 +35,48 @@ function renderizarMsg(msg){
     const renderizar = document.querySelector(".container");
 
     for(let i=0; i<arrayMsg.length; i++){
-        console.log(arrayMsg[i]);
-        renderizar.innerHTML += `
-        <div class="msg">
-            <h1>(${arrayMsg[i].time})</h1>
-            <p><strong>${arrayMsg[i].from}</strong>
-            ${arrayMsg[i].text}</p>
-        </div>`;
+        if(arrayMsg[i].type === 'status'){
+            if(arrayMsg[i] === arrayMsg[arrayMsg.length-1]){
+                renderizar.innerHTML += `
+                <div class="msg status last">
+                    <p><b>(${arrayMsg[i].time})</b>
+                    <strong>${arrayMsg[i].from}</strong>
+                    ${arrayMsg[i].text}</p>
+                </div>`;
+            }else{
+                renderizar.innerHTML += `
+                <div class="msg status">
+                    <p><b>(${arrayMsg[i].time})</b>
+                    <strong>${arrayMsg[i].from}</strong>
+                    ${arrayMsg[i].text}</p>
+                </div>`;
+            }
+        }
+        if(arrayMsg[i].type === 'message'){
+            if(arrayMsg[i] === arrayMsg[arrayMsg.length-1]){
+                renderizar.innerHTML += `
+                <div class="msg status last">
+                    <p><b>(${arrayMsg[i].time})</b>
+                    <strong>${arrayMsg[i].from}</strong>
+                    ${arrayMsg[i].text}</p>
+                </div>`;
+            }else{
+                renderizar.innerHTML += `
+                <div class="msg mensagem">
+                    <p><b>(${arrayMsg[i].time})</b>
+                    <strong>${arrayMsg[i].from}</strong>
+                    para
+                    <strong>${arrayMsg[i].to}:</strong>
+                    ${arrayMsg[i].text}</p>
+                </div>`;
+            }
+        }
     }
+
+    //setInterval(scrollTravado, 1000);
 }
 
-
+function scrollTravado(){
+    const elementoQueQueroQueApareca = document.querySelector('.container .last');
+    elementoQueQueroQueApareca.scrollIntoView();
+}

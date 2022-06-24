@@ -9,6 +9,10 @@ strong{
     font-weight: 700;
 }
 
+b{
+    color: #AAAAAA;
+}
+
 ion-icon{
     font-size: 35px;
 }
@@ -77,22 +81,24 @@ input::placeholder{
 .msg{
     display: flex;
     align-items: center;
-    height: 40px;
     width: 100%;
+    min-height: 40px;
     padding: 0 9px;
     margin-bottom: 4px;
     font-size: 14px;
-    overflow: hidden;
+}
+
+.status{
     background-color: #DCDCDC;
 }
+
+.mensagem{
+    background-color: #FFFFFF;
+}
+
 .msg p{
     font-weight: 400;  
     color: #000000
 }
 
-.msg h1{
-    font-weight: 400;  
-    color: #AAAAAA;
-    margin-right: 8px;
-}
 
