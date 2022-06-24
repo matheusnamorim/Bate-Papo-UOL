@@ -75,7 +75,7 @@ input::placeholder{
 
 .container{
     width: 100%;
-    margin: 106px 0;
+    padding: 106px 0;
 }
 
 .msg{
