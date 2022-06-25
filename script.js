@@ -18,6 +18,7 @@ function insercaoSucesso(msg){
     if(msg.status === 200) {
      carregarMsg();
      statusUser();
+     aparecerListaUsuarios();
      statusOnline = true;
     }
  }
@@ -42,6 +43,7 @@ function enviarMsg(){
         });
         document.querySelector("input").value =  ``;  
     }
+    if(statusOnline === false) window.location.reload();
 }
 
 function carregarMsg(){
@@ -81,9 +83,7 @@ function renderizarMsg(msg){
 
 function scrollTravado(){
     const temp = document.querySelectorAll(".msg");
-    temp[(arrayMsg.length)-1].classList.add('last');
-    const elementoQueQueroQueApareca = document.querySelector('.last');
-    elementoQueQueroQueApareca.scrollIntoView();
+    (temp[(temp.length)-1]).scrollIntoView();
 }
 
 function limparRenderização(){
@@ -108,4 +108,54 @@ function online(msg){
 
 function offline(msg){
     if(msg.status != 200) statusOnline = false;
+}
+
+function aparecerUsuario(){
+    const telaUsuarios = document.querySelector(".containerFalso");
+    telaUsuarios.classList.add("mostrarContainer");
+}
+
+function desaparecerContainer(){
+    const telaUsuarios = document.querySelector(".containerFalso");
+    telaUsuarios.classList.remove("mostrarContainer");
+}
+
+function aparecerListaUsuarios(){
+    setInterval(function(){
+        const usuariosAtivos = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
+        usuariosAtivos.then(renderizarParticipantes);
+        usuariosAtivos.catch(erroUsuarios);
+    }, 10000);
+}
+
+function renderizarParticipantes(usuariosAtivos){
+    const usuarios = document.querySelector("ul");
+    const checarMarcado = document.querySelector(".selecionado");
+    let marcado;
+    if(checarMarcado != null) marcado = checarMarcado.parentNode.children[0].children[1].innerHTML;
+    usuarios.innerHTML = ``;
+    const vetorUsuarios = [];
+
+    if(marcado === "Todos") usuarios.innerHTML += `<li><div class="tiposUsuario"><ion-icon class="iconParticipantes" name="people-sharp"></ion-icon><p onclick="selecionarPessoa(this);">Todos</p></div><div class="check selecionado" ><ion-icon name="checkmark"></ion-icon></div></l1>`;
+    else usuarios.innerHTML += `<li><div class="tiposUsuario"><ion-icon class="iconParticipantes" name="people-sharp"></ion-icon><p onclick="selecionarPessoa(this);">Todos</p></div><div class="check" ><ion-icon name="checkmark"></ion-icon></div></l1>`;
+    
+    for(let i=0; i<usuariosAtivos.data.length; i++){
+        vetorUsuarios.push(usuariosAtivos.data[i]); 
+        if(vetorUsuarios[i].name === marcado) usuarios.innerHTML += `<li><div class="tiposUsuario"><div class="iconParticipantes"><ion-icon name="person-circle"></ion-icon></div><p onclick="selecionarPessoa(this);">${vetorUsuarios[i].name}</p></div><div class="check selecionado" ><ion-icon name="checkmark"></ion-icon></div></l1>`;
+        else usuarios.innerHTML += `<li><div class="tiposUsuario"><div class="iconParticipantes"><ion-icon name="person-circle"></ion-icon></div><p onclick="selecionarPessoa(this);">${vetorUsuarios[i].name}</p></div><div class="check" ><ion-icon name="checkmark"></ion-icon></div></l1>`;
+    }
+}
+
+function selecionarPessoa(elemento){
+    let pessoaClicada = document.querySelector(".selecionado");
+    if(pessoaClicada != null){
+        pessoaClicada.classList.remove("selecionado");
+    }
+    elemento.parentNode.parentNode.children[1].classList.add("selecionado");
+
+}
+
+function erroUsuarios(){
+    alert("Erro ao imprimir participantes");
+    window.location.reload();
 }

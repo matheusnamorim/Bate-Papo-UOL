@@ -47,7 +47,6 @@ ion-icon{
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -60,6 +59,7 @@ ion-icon{
 
 .bottomBar input{
     height: 30px;
+    width: 80%;
     border: none;
     font-size: 18px;
     font-weight: 400;
@@ -81,6 +81,7 @@ input::placeholder{
 .msg{
     display: flex;
     align-items: center;
+    word-break: break-word;
     width: 100%;
     min-height: 40px;
     padding: 0 9px;
@@ -101,4 +102,82 @@ input::placeholder{
     color: #000000
 }
 
+.containerFalso{
+    position: fixed;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    right: -100%;
+    background: rgba(0, 0, 0, 0.6);
+}
 
+.clickVoltar{
+    width: 20%;
+}
+
+.usuarios{
+    width: 80%;
+    background-color: #FFFFFF;
+}
+
+.titulo{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    height: 84px;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.mostrarContainer{
+    right: 0; 
+}
+
+.listaUsuarios{
+    padding: 0 16px;
+}
+
+.listaUsuarios li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1px;
+}
+
+.tiposUsuario{
+    display: flex;
+    align-items: center;
+    width: 80%;
+}
+
+.listaUsuarios p{
+    word-break: break-all;
+    font-size: 16px;
+    font-weight: 400;
+
+}
+div ion-icon{
+    font-size: 25px;
+}
+
+.iconParticipantes{
+    width: 25px;
+    height: 25px;
+    margin-right: 8px;
+    color: black;
+}
+
+div .check ion-icon{
+    font-size: 20px;
+    color: #28BB25;
+}
+
+.check{
+    opacity: 0;
+}
+
+.selecionado{
+    opacity: 1;
+}

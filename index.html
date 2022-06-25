@@ -14,7 +14,16 @@
 
     <div class="topBar">
         <img src="./assets/logo.png" alt="logo">
-        <ion-icon name="people-sharp"></ion-icon>
+        <ion-icon onclick="aparecerUsuario();" name="people-sharp"></ion-icon>
+    </div>
+    <div class="containerFalso">
+        <div class="clickVoltar" onclick="desaparecerContainer();"></div>
+        <div class="usuarios">
+            <div class="titulo">Escolha um contato<br>para enviar mensagem:</div>
+            <ul class="listaUsuarios">
+            </ul>
+        </div>
+        
     </div>
     <div class="container">
     </div>
@@ -25,5 +34,6 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     <script src="script.js"></script>
+    <!---->
 </body>
 </html>
