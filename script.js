@@ -1,6 +1,8 @@
 let arrayMsg = [];
 let nome;
 let statusOnline = false;
+let usuarioMSg;
+let visibilidadeEscolhida;
 
 function iniciandoNome(){
     nome = prompt("Digite seu lindo nome!");
@@ -9,7 +11,6 @@ function iniciandoNome(){
         name: nome
     };
     const nomeServidor = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', nomeObj);
-
     nomeServidor.then(insercaoSucesso);
     nomeServidor.catch(insercaoErro);
 }
@@ -17,8 +18,8 @@ function iniciandoNome(){
 function insercaoSucesso(msg){
     if(msg.status === 200) {
      carregarMsg();
-     statusUser();
      aparecerListaUsuarios();
+     statusUser();
      statusOnline = true;
     }
  }
@@ -34,23 +35,29 @@ iniciandoNome();
 
 function enviarMsg(){
     const msg = document.querySelector("input").value;
+    let tipo;
     if(statusOnline === true) {
+       if(visibilidadeEscolhida === "Público") tipo = "message";
+       else if(visibilidadeEscolhida === "Reservadamente") tipo = "private_message";
         let msgEnviada = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', {
             from: nome,
-            to: "Todos",
+            to: usuarioMSg,
             text: msg,
-            type: "message"
+            type: tipo
         });
+        msgEnviada.catch(erroMsg); 
         document.querySelector("input").value =  ``;  
     }
     if(statusOnline === false) window.location.reload();
 }
 
+function erroMsg(){
+    alert("Primeiro selecione o Participante que deseja enviar a mensagem e a sua visibilidade, clicando no icone do canto superior direito!");
+}
+
 function carregarMsg(){
-    setInterval(function(){
-        const envios = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');
-        envios.then(renderizarMsg);
-    }, 3000);
+    const envios = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');
+    envios.then(renderizarMsg);
 }
 
 function renderizarMsg(msg){
@@ -74,6 +81,16 @@ function renderizarMsg(msg){
             <div class="msg status">
                 <p><b>(${arrayMsg[i].time})</b>
                 <strong>${arrayMsg[i].from}</strong>
+                ${arrayMsg[i].text}</p>
+            </div>`;
+        }
+        if(arrayMsg[i].type === 'private_message' && (arrayMsg[i].from === nome || arrayMsg[i].to === nome)){
+            renderizar.innerHTML += `
+            <div class="msg privateMsg">
+                <p><b>(${arrayMsg[i].time})</b>
+                <strong>${arrayMsg[i].from}</strong>
+                reservadamente para
+                <strong>${arrayMsg[i].to}:</strong>
                 ${arrayMsg[i].text}</p>
             </div>`;
         }
@@ -121,11 +138,9 @@ function desaparecerContainer(){
 }
 
 function aparecerListaUsuarios(){
-    setInterval(function(){
-        const usuariosAtivos = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
-        usuariosAtivos.then(renderizarParticipantes);
-        usuariosAtivos.catch(erroUsuarios);
-    }, 10000);
+    const usuariosAtivos = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
+    usuariosAtivos.then(renderizarParticipantes);
+    usuariosAtivos.catch(erroUsuarios);
 }
 
 function renderizarParticipantes(usuariosAtivos){
@@ -136,13 +151,13 @@ function renderizarParticipantes(usuariosAtivos){
     usuarios.innerHTML = ``;
     const vetorUsuarios = [];
 
-    if(marcado === "Todos") usuarios.innerHTML += `<li><div class="tiposUsuario"><ion-icon class="iconParticipantes" name="people-sharp"></ion-icon><p onclick="selecionarPessoa(this);">Todos</p></div><div class="check selecionado" ><ion-icon name="checkmark"></ion-icon></div></l1>`;
-    else usuarios.innerHTML += `<li><div class="tiposUsuario"><ion-icon class="iconParticipantes" name="people-sharp"></ion-icon><p onclick="selecionarPessoa(this);">Todos</p></div><div class="check" ><ion-icon name="checkmark"></ion-icon></div></l1>`;
+    if(marcado === "Todos") usuarios.innerHTML += `<li><div class="tiposUsuario"><ion-icon class="iconParticipantes" name="people-sharp"></ion-icon><p data-identifier="participant" onclick="selecionarPessoa(this);">Todos</p></div><div class="check selecionado" ><ion-icon name="checkmark"></ion-icon></div></l1>`;
+    else usuarios.innerHTML += `<li><div class="tiposUsuario"><ion-icon class="iconParticipantes" name="people-sharp"></ion-icon><p data-identifier="participant" onclick="selecionarPessoa(this);">Todos</p></div><div class="check" ><ion-icon name="checkmark"></ion-icon></div></l1>`;
     
     for(let i=0; i<usuariosAtivos.data.length; i++){
         vetorUsuarios.push(usuariosAtivos.data[i]); 
-        if(vetorUsuarios[i].name === marcado) usuarios.innerHTML += `<li><div class="tiposUsuario"><div class="iconParticipantes"><ion-icon name="person-circle"></ion-icon></div><p onclick="selecionarPessoa(this);">${vetorUsuarios[i].name}</p></div><div class="check selecionado" ><ion-icon name="checkmark"></ion-icon></div></l1>`;
-        else usuarios.innerHTML += `<li><div class="tiposUsuario"><div class="iconParticipantes"><ion-icon name="person-circle"></ion-icon></div><p onclick="selecionarPessoa(this);">${vetorUsuarios[i].name}</p></div><div class="check" ><ion-icon name="checkmark"></ion-icon></div></l1>`;
+        if(vetorUsuarios[i].name === marcado) usuarios.innerHTML += `<li><div class="tiposUsuario"><div class="iconParticipantes"><ion-icon name="person-circle"></ion-icon></div><p data-identifier="participant" onclick="selecionarPessoa(this);">${vetorUsuarios[i].name}</p></div><div class="check selecionado" ><ion-icon name="checkmark"></ion-icon></div></l1>`;
+        else usuarios.innerHTML += `<li><div class="tiposUsuario"><div class="iconParticipantes"><ion-icon name="person-circle"></ion-icon></div><p data-identifier="participant" onclick="selecionarPessoa(this);">${vetorUsuarios[i].name}</p></div><div class="check" ><ion-icon name="checkmark"></ion-icon></div></l1>`;
     }
 }
 
@@ -151,9 +166,13 @@ function selecionarPessoa(elemento){
     if(pessoaClicada != null){
         pessoaClicada.classList.remove("selecionado");
     }
-    if(elemento.parentNode.parentNode.children[0].children[1].innerHTML != nome)
-        elemento.parentNode.parentNode.children[1].classList.add("selecionado");
-
+    usuarioMSg = elemento.parentNode.parentNode.children[0].children[1].innerHTML;
+    if((usuarioMSg === "Todos" && visibilidadeEscolhida === "Reservadamente"));
+    else{
+        if(usuarioMSg != nome) elemento.parentNode.parentNode.children[1].classList.add("selecionado");
+        usuarioMSg = document.querySelector(".selecionado").parentNode.children[0].children[1].innerHTML;
+        msgRemetente();
+    }
 }
 
 function selecionarVisibilidade(elemento){
@@ -161,10 +180,41 @@ function selecionarVisibilidade(elemento){
     if(visibilidadeClicada != null){
         visibilidadeClicada.classList.remove("visibilidadeSelecionado");
     }
-    elemento.parentNode.parentNode.children[1].classList.add("visibilidadeSelecionado");
+    visibilidadeEscolhida = elemento.innerHTML;
+    if(usuarioMSg != null){
+        if(usuarioMSg === "Todos" &&  elemento.innerHTML === "Reservadamente");
+        else {
+            elemento.parentNode.parentNode.children[1].classList.add("visibilidadeSelecionado");
+            visibilidadeEscolhida = document.querySelector(".visibilidadeSelecionado").parentNode.children[0].children[1].innerHTML;
+            msgRemetente();
+        }
+    }
+}
+
+function msgRemetente(){
+    if(usuarioMSg != null && visibilidadeEscolhida != null) {
+        if(usuarioMSg === "Todos" && visibilidadeEscolhida === "Reservadamente");
+        else{
+            const string = `Enviando para ${usuarioMSg} (${visibilidadeEscolhida})`;
+            document.querySelector(".remetente").innerHTML = string;
+            document.querySelector(".remetente").classList.remove("selecionadoRemetente");
+        }
+    }
 }
 
 function erroUsuarios(){
     alert("Erro ao imprimir participantes");
     window.location.reload();
 }
+
+document.addEventListener("keypress", function(evento){
+    if(evento.key === "Enter") enviarMsg();
+});
+
+setInterval(function(){
+    aparecerListaUsuarios();
+}, 10000);
+
+setInterval(function (){
+    carregarMsg();
+}, 3000);

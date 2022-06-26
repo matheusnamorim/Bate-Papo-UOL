@@ -58,7 +58,7 @@ ion-icon{
 }
 
 .bottomBar input{
-    height: 30px;
+    height: 60px;
     width: 80%;
     border: none;
     font-size: 18px;
@@ -71,6 +71,10 @@ input::placeholder{
     font-weight: 400;
     font-size: 18px;
     color: #000000;
+}
+
+input:focus, select:focus {
+    outline: 0;
 }
 
 .container{
@@ -95,6 +99,10 @@ input::placeholder{
 
 .mensagem{
     background-color: #FFFFFF;
+}
+
+.privateMsg{
+    background-color: #FFDEDE;
 }
 
 .msg p{
@@ -206,10 +214,27 @@ div .check ion-icon{
     opacity: 0;
 }
 
-.selecionado{
+.selecionado,
+.visibilidadeSelecionado{
     opacity: 1;
 }
 
-.visibilidadeSelecionado{
+.remetente{
+    position: fixed;
+    bottom: 0px;
+    left: 20px;
+    width: 90%;
+    height: 25px;
     opacity: 1;
+}
+
+.remetente{
+    word-break: break-all;
+    font-size: 18px;
+    font-weight: 400;
+    color: #505050;
+}
+
+.selecionadoRemetente{
+    opacity: 0;
 }

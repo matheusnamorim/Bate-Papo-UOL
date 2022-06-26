@@ -27,14 +27,14 @@
                 <div>
                     <div class="alinhar">
                         <ion-icon class="iconParticipantes" name="lock-open"></ion-icon>
-                        <p onclick="selecionarVisibilidade(this);">Público</p>
+                        <p data-identifier="visibility" onclick="selecionarVisibilidade(this);">Público</p>
                     </div>
                     <ion-icon class="check iconVisibilidade" name="checkmark"></ion-icon>
                 </div>
                 <div>
                     <div class="alinhar">
                         <ion-icon class="iconParticipantes" name="lock-closed"></ion-icon>
-                        <p onclick="selecionarVisibilidade(this);">Reservadamente</p>
+                        <p data-identifier="visibility" onclick="selecionarVisibilidade(this);">Reservadamente</p>
                     </div>
                     <ion-icon class="check iconVisibilidade" name="checkmark"></ion-icon>
                 </div>
@@ -48,6 +48,7 @@
         <input placeholder="Escreva aqui...">
         <ion-icon name="paper-plane-outline" onclick="enviarMsg();"></ion-icon>
     </div>
+    <p class="remetente selecionadoRemetente">Enviando para Maria (reservadamente)</p>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     <script src="script.js"></script>
