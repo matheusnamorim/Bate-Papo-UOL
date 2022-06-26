@@ -118,6 +118,7 @@ input::placeholder{
 
 .usuarios{
     width: 80%;
+    overflow-y: scroll;
     background-color: #FFFFFF;
 }
 
@@ -174,10 +175,41 @@ div .check ion-icon{
     color: #28BB25;
 }
 
+.visibilidade > div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+}
+
+.visibilidade p{
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 8px;
+}
+
+.iconVisibilidade{
+    font-size: 20px;
+    color: #28BB25;
+
+}
+
+.visibilidade div:nth-child(2){
+    margin-bottom: 30px;  
+}
+
+.alinhar{
+    display: flex;
+}
+
 .check{
     opacity: 0;
 }
 
 .selecionado{
+    opacity: 1;
+}
+
+.visibilidadeSelecionado{
     opacity: 1;
 }

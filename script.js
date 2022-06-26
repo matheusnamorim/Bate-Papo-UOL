@@ -151,8 +151,17 @@ function selecionarPessoa(elemento){
     if(pessoaClicada != null){
         pessoaClicada.classList.remove("selecionado");
     }
-    elemento.parentNode.parentNode.children[1].classList.add("selecionado");
+    if(elemento.parentNode.parentNode.children[0].children[1].innerHTML != nome)
+        elemento.parentNode.parentNode.children[1].classList.add("selecionado");
 
+}
+
+function selecionarVisibilidade(elemento){
+    let visibilidadeClicada = document.querySelector(".visibilidadeSelecionado");
+    if(visibilidadeClicada != null){
+        visibilidadeClicada.classList.remove("visibilidadeSelecionado");
+    }
+    elemento.parentNode.parentNode.children[1].classList.add("visibilidadeSelecionado");
 }
 
 function erroUsuarios(){
