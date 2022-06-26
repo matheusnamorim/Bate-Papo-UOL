@@ -16,6 +16,16 @@
         <img src="./assets/logo.png" alt="logo">
         <ion-icon onclick="aparecerUsuario();" name="people-sharp"></ion-icon>
     </div>
+    <div class="telaInicio">
+        <div class="centralizarTelaInicio">
+            <img src="./assets/logo.png" alt="inicioLogo">
+            <div class="nome">
+                <input class="inputNome" type="text" placeholder="Digite seu nome">
+                <div><p class="botaoEntrar" onclick="iniciandoNome();">Entrar</p></div>
+            </div>
+            <img class="entrando escondido" src="./assets/carregando.gif" alt="carregando">
+        </div>
+    </div>
     <div class="containerFalso">
         <div class="clickVoltar" onclick="desaparecerContainer();"></div>
         <div class="usuarios">
@@ -45,10 +55,11 @@
     <div class="container">
     </div>
     <div class="bottomBar">
-        <input placeholder="Escreva aqui...">
+        <input class="inputBottomBar" placeholder="Escreva aqui...">
         <ion-icon name="paper-plane-outline" onclick="enviarMsg();"></ion-icon>
     </div>
     <p class="remetente selecionadoRemetente">Enviando para Maria (reservadamente)</p>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     <script src="script.js"></script>

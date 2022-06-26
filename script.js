@@ -5,48 +5,61 @@ let usuarioMSg;
 let visibilidadeEscolhida;
 
 function iniciandoNome(){
-    nome = prompt("Digite seu lindo nome!");
 
-    const nomeObj = {
-        name: nome
-    };
-    const nomeServidor = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', nomeObj);
-    nomeServidor.then(insercaoSucesso);
-    nomeServidor.catch(insercaoErro);
+    nome = document.querySelector(".inputNome").value;
+    document.querySelector(".nome").classList.add("escondido");
+    document.querySelector(".entrando").classList.remove("escondido");
+    setTimeout(function(){
+        const nomeServidor = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', {
+            name: nome
+        });
+        nomeServidor.then(insercaoSucesso);
+        nomeServidor.catch(insercaoErro);
+    }, 2000);
 }
 
 function insercaoSucesso(msg){
     if(msg.status === 200) {
-     carregarMsg();
-     aparecerListaUsuarios();
-     statusUser();
-     statusOnline = true;
+        document.querySelector(".telaInicio").classList.add("escondido");
+        carregarMsg();
+        aparecerListaUsuarios();
+        statusUser();
+        statusOnline = true;
     }
  }
 
  function insercaoErro(msg){
     if(msg.response.status === 400) {
         alert("Nome já esta sendo ultilizado, digite outro!");
-        iniciandoNome();
+        window.location.reload();
     }
 }
 
-iniciandoNome();
-
 function enviarMsg(){
-    const msg = document.querySelector("input").value;
+    const msg = document.querySelector(".inputBottomBar").value;
     let tipo;
     if(statusOnline === true) {
        if(visibilidadeEscolhida === "Público") tipo = "message";
        else if(visibilidadeEscolhida === "Reservadamente") tipo = "private_message";
-        let msgEnviada = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', {
-            from: nome,
-            to: usuarioMSg,
-            text: msg,
-            type: tipo
-        });
-        msgEnviada.catch(erroMsg); 
-        document.querySelector("input").value =  ``;  
+       if(usuarioMSg === undefined && visibilidadeEscolhida === undefined){
+            let msgEnviada = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', {
+                from: nome,
+                to: "Todos",
+                text: msg,
+                type: "message"
+            });
+            msgEnviada.catch(erroMsg);
+            document.querySelector(".inputBottomBar").value =  ``;  
+       }else{
+            let msgEnviada = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', {
+                from: nome,
+                to: usuarioMSg,
+                text: msg,
+                type: tipo
+            });
+            msgEnviada.catch(erroMsg);
+            document.querySelector(".inputBottomBar").value =  ``;  
+       }
     }
     if(statusOnline === false) window.location.reload();
 }
@@ -208,7 +221,8 @@ function erroUsuarios(){
 }
 
 document.addEventListener("keypress", function(evento){
-    if(evento.key === "Enter") enviarMsg();
+    if(evento.key === "Enter" && statusOnline === true) enviarMsg();
+    else if(evento.key === "Enter" && statusOnline === false) iniciandoNome();
 });
 
 setInterval(function(){
